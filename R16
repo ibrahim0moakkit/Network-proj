@@ -1,0 +1,87 @@
+Building configuration...
+
+Current configuration : 908 bytes
+!
+upgrade fpd auto
+version 15.0
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R16
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+ip source-route
+ip cef
+!
+!
+!
+!
+no ipv6 cef
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 76.0.0.16 255.0.0.0
+ duplex half
+!
+interface FastEthernet1/0
+ ip address 56.0.0.16 255.0.0.0
+ duplex half
+!         
+router bgp 8602
+ no synchronization
+ bgp log-neighbor-changes
+ network 56.0.0.0
+ network 76.0.0.0
+ neighbor 56.0.0.15 remote-as 8601
+ neighbor 76.0.0.17 remote-as 8603
+ no auto-summary
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp fax t38 ecm
+mgcp behavior g729-variants static-pt
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+end
+
