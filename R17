@@ -1,0 +1,104 @@
+Building configuration...
+
+Current configuration : 1288 bytes
+!
+! Last configuration change at 12:25:42 UTC Sat Aug 24 2024
+!
+upgrade fpd auto
+version 15.0
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R17
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+ip source-route
+ip cef
+!
+!
+!
+!         
+no ipv6 cef
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username R17 password 0 xyz
+!
+!
+!
+!
+!
+!
+bba-group pppoe 7
+ virtual-template 1
+!
+!
+interface FastEthernet0/0
+ ip address 47.0.0.17 255.0.0.0
+ duplex half
+!
+interface FastEthernet1/0
+ ip address 76.0.0.17 255.0.0.0
+ duplex half
+!
+interface FastEthernet2/0
+ no ip address
+ duplex half
+ pppoe enable group 7
+!
+interface Virtual-Template1
+ ip address 79.0.0.17 255.0.0.0
+ peer default ip address pool ABC
+ ppp authentication pap
+!
+router bgp 8603
+ no synchronization
+ bgp log-neighbor-changes
+ network 47.0.0.0
+ network 79.0.0.0
+ redistribute connected
+ neighbor 47.0.0.14 remote-as 8600
+ neighbor 76.0.0.16 remote-as 8602
+ no auto-summary
+!
+ip local pool ABC 79.0.0.19
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp fax t38 ecm
+mgcp behavior g729-variants static-pt
+!
+!
+!
+gatekeeper
+ shutdown 
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+end
