@@ -1,0 +1,106 @@
+Building configuration...
+
+Current configuration : 1321 bytes
+!
+! Last configuration change at 12:24:36 UTC Sat Aug 24 2024
+!
+upgrade fpd auto
+version 15.0
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R15
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+ip source-route
+ip cef
+!
+!
+!
+!         
+no ipv6 cef
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username R15 password 0 xyz
+!
+!
+!
+!
+!
+!
+bba-group pppoe 7
+ virtual-template 1
+!
+!
+interface FastEthernet0/0
+ ip address 45.0.0.15 255.0.0.0
+ duplex half
+!
+interface FastEthernet1/0
+ ip address 56.0.0.15 255.0.0.0
+ duplex half
+!
+interface FastEthernet2/0
+ no ip address
+ duplex half
+ pppoe enable group 7
+ pppoe-client dial-pool-number 1
+!
+interface Virtual-Template1
+ ip address 58.0.0.15 255.0.0.0
+ peer default ip address pool ABC
+ ppp authentication pap
+!
+router bgp 8601
+ no synchronization
+ bgp log-neighbor-changes
+ network 45.0.0.0
+ network 56.0.0.0
+ redistribute connected
+ neighbor 45.0.0.14 remote-as 8600
+ neighbor 56.0.0.16 remote-as 8602
+ no auto-summary
+!
+ip local pool ABC 58.0.0.18
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp fax t38 ecm
+mgcp behavior g729-variants static-pt
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+end
+
